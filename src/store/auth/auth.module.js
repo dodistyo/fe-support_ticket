@@ -26,6 +26,9 @@ const getters = {
   currentUser(state) {
     return state.user;
   },
+  currentRole(state) {
+    return state.user.roles;
+  },
   currentUserRole(state) {
     return state.user.roles;
   },
@@ -51,17 +54,9 @@ const actions = {
     context.commit(PURGE_AUTH);
     router.push('/pages/login');
   },
-  [REGISTER](context, credentials) {
+  setError(context, credentials) {
     return new Promise((resolve, reject) => {
-      ApiService.post("users", { user: credentials })
-        .then(({ data }) => {
-          context.commit(SET_AUTH, data.user);
-          resolve(data);
-        })
-        .catch(({ response }) => {
-          context.commit(SET_ERROR, response.data.errors);
-          reject(response);
-        });
+      context.commit(SET_ERROR, credentials);
     });
   },
   [CHECK_AUTH](context) {

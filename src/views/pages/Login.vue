@@ -101,7 +101,7 @@ export default {
     },
     watch: {
         errorStatus(newVal, oldVal){
-            if (newVal.status == !true){
+            if (newVal.status == false){
                 this.$vs.notify({
                 title: 'LOGIN FAILED',
                 text: newVal.message,

@@ -16,16 +16,13 @@
           <template lang="html">
               <div>
                 <vs-table
-                  v-model="selected"
                   pagination
                   :max-items="maxPerPage"
                   search
                   :data="users">
-                  <!-- <template slot="header">
-                    <h3>
-                      Users
-                    </h3>
-                  </template> -->
+                  <template slot="header">
+                    <vs-button size="medium" color="success" @click="add();" icon="add" type="filled">Add</vs-button>
+                  </template>
                   <template slot="thead">
                     <vs-th sort-key="username">
                       Username
@@ -62,13 +59,12 @@
                         {{data[indextr].phone}}
                       </vs-td>
 
-                      <vs-td :data="data[indextr].id">
+                      <vs-td :data="[data[indextr]]">
                         <vs-row>
-                          <vs-button size="small" color="success" @click="edit(data[indextr].id)" icon="edit" type="filled">Ubah</vs-button>
-                          &nbsp
-                          <vs-button size="small" color="danger" @click="edit(data[indextr].id)" icon="delete" type="filled">Delete</vs-button>
+                          <vs-button size="small" color="primary" @click="edit(data[indextr]);" icon="edit" type="filled">Edit</vs-button>
+                          &nbsp;
+                          <vs-button size="small" color="danger" @click="removeConfirm(data[indextr].id);" icon="delete" type="filled">Delete</vs-button>
                         </vs-row>
-                        
                       </vs-td>
                     </vs-tr>
                   </template>
@@ -77,11 +73,75 @@
                 <!-- Modals -->
 
                 <!-- Edit Modal -->
-                <vs-popup class="holamundo"  title="Lorem ipsum dolor sit amet" :active.sync="editModal">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-                  </p>
+                <vs-popup class="holamundo"  :title="titleModal" :active.sync="userModal">
+                  <div class="vx-row mb-6">
+                    <div class="vx-col sm:w-1/3 w-full">
+                      <span>Name</span>
+                    </div>
+                    <div class="vx-col sm:w-2/3 w-full">
+                      <vs-input class="w-full" v-model="name" />
+                    </div>
+                  </div>
+                  <div class="vx-row mb-6">
+                    <div class="vx-col sm:w-1/3 w-full">
+                      <span>Username</span>
+                    </div>
+                    <div class="vx-col sm:w-2/3 w-full">
+                      <vs-input class="w-full" type="email" v-model="username" />
+                    </div>
+                  </div>
+                  <div class="vx-row mb-6">
+                    <div class="vx-col sm:w-1/3 w-full">
+                      <span>Password</span>
+                    </div>
+                    <div class="vx-col sm:w-2/3 w-full">
+                      <vs-input :description-text="passwordDesc" class="w-full" type="password" v-model="password" />
+                    </div>
+                  </div>
+                  <div class="vx-row mb-6">
+                    <div class="vx-col sm:w-1/3 w-full">
+                      <span>Role</span>
+                    </div>
+                    <div class="vx-col sm:w-2/3 w-full">
+                     <ul class="centerx">
+                        <li class="modelx">
+                        </li>
+                        <li>
+                          <vs-checkbox v-model="role" vs-value="1">Admin</vs-checkbox>
+                        </li>
+                        <li>
+                          <vs-checkbox v-model="role" vs-value="2">Manager</vs-checkbox>
+                        </li>
+                        <li>
+                          <vs-checkbox v-model="role" vs-value="3">Staff</vs-checkbox>
+                        </li>
+                        <li>
+                          <vs-checkbox v-model="role" vs-value="4">User</vs-checkbox>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="vx-row mb-6">
+                    <div class="vx-col sm:w-1/3 w-full">
+                      <span>Email</span>
+                    </div>
+                    <div class="vx-col sm:w-2/3 w-full">
+                      <vs-input class="w-full" v-model="email" />
+                    </div>
+                  </div>
+                  <div class="vx-row mb-6">
+                    <div class="vx-col sm:w-1/3 w-full">
+                      <span>Mobile Phone</span>
+                    </div>
+                    <div class="vx-col sm:w-2/3 w-full">
+                      <vs-input class="w-full" v-model="phone" />
+                    </div>
+                  </div>
+                  <div class="vx-row">
+                    <div class="vx-col sm:w-2/3 w-full ml-auto">
+                      <vs-button @click="checkAction()" class="mr-3 mb-2 float-right success">{{ btnAction }}</vs-button>
+                    </div>
+                  </div>
                 </vs-popup>
 
                 <!-- <pre>{{ selected }}</pre> -->
@@ -96,130 +156,205 @@
 
 <script>
 import ChangeTimeDurationDropdown from '@/components/ChangeTimeDurationDropdown.vue'
+import ApiService from "@/auth/api.service";
+
 
 export default {
     data:()=>({
-      editModal : false,
-      selected:[],
+      // Modal detail
+      userModal : false,
+      titleModal : '',
+      btnAction : '',
+      action : '',
+      btnColor : '',
+      // User field
+      idUser : '',
+      name : '',
+      username : '',
+      email : '',
+      phone : '',
+      password : '',
+      passwordDesc : '',
+      role: [],
+      // END OF User field
       maxPerPage: 10,
-      users:[
-  {
-    "id": 1,
-    "name": "Administrator",
-    "email": "",
-    "phone": "",
-    "username": "admin",
-    "roles": [
-      {
-        "id": 1,
-        "name": "Admin",
-        "description": "administrator"
-      },
-      {
-        "id": 2,
-        "name": "Manager",
-        "description": "support manager"
-      },
-      {
-        "id": 3,
-        "name": "Staff",
-        "description": "support staff"
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "name": "Dodi Prasetyo",
-    "email": "",
-    "phone": "",
-    "username": "dodistyo",
-    "roles": [
-      {
-        "id": 2,
-        "name": "Manager",
-        "description": "support manager"
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "name": "Staff Test",
-    "email": "",
-    "phone": "",
-    "username": "staff",
-    "roles": [
-      {
-        "id": 3,
-        "name": "Staff",
-        "description": "support staff"
-      }
-    ]
-  },
-  {
-    "id": 4,
-    "name": "User Test",
-    "email": "",
-    "phone": "",
-    "username": "user",
-    "roles": [
-      {
-        "id": 4,
-        "name": "User",
-        "description": "normal user who request ticket"
-      }
-    ]
-  },
-  {
-    "id": 16,
-    "name": "Agustian Nugraha",
-    "email": "agustian@gmail.com",
-    "phone": "082115879753",
-    "username": "agust",
-    "roles": [
-      {
-        "id": 1,
-        "name": "Admin",
-        "description": "administrator"
-      },
-      {
-        "id": 2,
-        "name": "Manager",
-        "description": "support manager"
-      }
-    ]
-  },
-  {
-    "id": 20,
-    "name": "Bagas Anggara",
-    "email": "bagas@gmail.com",
-    "phone": "082115879753",
-    "username": "bagas",
-    "roles": [
-      {
-        "id": 2,
-        "name": "Manager",
-        "description": "support manager"
-      },
-      {
-        "id": 3,
-        "name": "Staff",
-        "description": "support staff"
-      }
-    ]
-  }
-]
+      users:[]
     }),
-     mounted:function(){
-        console.log(this.maxPerPage)
-    },
     components: {
         ChangeTimeDurationDropdown
     },
     methods: {
-      edit(id){
-        this.editModal = true
+      getAllUser(){
+        ApiService.setHeader();
+        ApiService.get("user")
+        .then(({ data }) => {
+          this.users = data
+          resolve(data);
+        })
+        .catch(({ response }) => {
+          if(response){
+            this.$store.dispatch('logout').then(() => {
+              this.$store.dispatch('setError', response.data);
+            });
+          }
+        }).finally(() => {
+          // console.log('always executed')
+        });
+      },
+      // Modal action
+      add(){
+        this.userModal = true;
+        this.titleModal = 'Add Record';
+        this.btnAction = 'Save',
+        this.btnColor = 'primary',
+        this.action = 'new',
+        this.name = '';
+        this.username = '';
+        this.email = '';
+        this.phone = '';
+        this.password = '';
+        this.role = [];
+      },
+      edit(data){
+        var role = data.roles.map(function(item) {
+          return item['id'].toString();
+        });
+        this.userModal = true;
+        this.titleModal = 'Edit Record'
+        this.btnAction = 'Update',
+        this.btnColor = 'success',
+        this.action = 'update',
+        this.idUser = data.id,
+        this.name = data.name;
+        this.username = data.username;
+        this.email = data.email;
+        this.phone = data.phone;
+        this.password = '';
+        this.role = role;
+        this.passwordDesc = "Let this field empty if you don't want to change the password";
+      },
+      checkAction(){
+        if(this.action == 'new'){
+          this.save();
+        }else if (this.action == 'update'){
+          this.update();
+        }
+      },
+      // Action to the backend
+      save(){
+        let payload = {
+          name: this.name,
+          username: this.username,
+          password: this.password,
+          email: this.email,
+          phone: this.phone,
+          role: this.role.map(Number)
+        }
+        ApiService.setHeader();
+        ApiService.post("user", payload)
+        .then(({ data }) => {
+            this.$vs.notify({
+            title: 'Succesful',
+            text: data.message,
+            position: 'bottom-center',
+            color: 'success'
+            })
+            this.getAllUser();
+            this.userModal = false;
+        })
+        .catch(({ response }) => {
+            this.$vs.notify({
+            title: 'Failed',
+            text: 'Failed to do the operation',
+            position: 'bottom-center',
+            color: 'danger'
+            })
+        });
+      },
+      update(){
+        let id = this.idUser
+        let payload = {
+          name: this.name,
+          username: this.username,
+          password: this.password,
+          email: this.email,
+          phone: this.phone,
+          role: this.role.map(Number)
+        }
+        ApiService.setHeader();
+        ApiService.patch("user/"+id, payload)
+        .then(({ data }) => {
+            this.$vs.notify({
+            title: 'Succesful',
+            text: data.message,
+            position: 'bottom-center',
+            color: 'success'
+            })
+            this.getAllUser();
+            this.userModal = false;
+        })
+        .catch(({ response }) => {
+            this.$vs.notify({
+            title: 'Failed',
+            text: 'Failed to do the operation',
+            position: 'bottom-center',
+            color: 'danger'
+            })
+        });
+      },
+      delete(id){
+        ApiService.setHeader();
+        ApiService.delete("user/"+id)
+        .then(({ data }) => {
+          this.$vs.notify({
+          title: 'Succesful',
+          text: data.message,
+          position: 'bottom-center',
+          color: 'success'
+          })
+          this.getAllUser();
+        })
+        .catch(({ response }) => {
+          this.$vs.notify({
+          title: 'Failed',
+          text: 'Failed to do the operation',
+          position: 'bottom-center',
+          color: 'danger'
+          })
+        });
+      },
+      removeConfirm(id){
+        this.$vs.dialog({
+        type:'confirm',
+        color: 'warning',
+        title: `Confirm`,
+        text: 'Are you sure want to delete this record ?',
+        accept: () => {
+          this.delete(id)
+        }
+        });
       }
-    }
+    },
+    computed: {
+      errorStatus(){
+        return this.$store.state.auth.errors
+      }
+    },
+    watch: {
+        errorStatus(newVal, oldVal){
+          if (newVal.name == 'TokenExpiredError'){
+              console.log(newVal)
+              this.$vs.notify({
+              title: 'Expired Session',
+              text: "You have been logged out because of inactivity",
+              color: 'warning'
+              })
+          }
+        }
+    },
+    mounted : function(){
+      this.getAllUser();
+    },
 }
 </script>
 

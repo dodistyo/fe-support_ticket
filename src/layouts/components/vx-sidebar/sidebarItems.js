@@ -27,29 +27,29 @@ const admin = [
     icon: "UsersIcon",
     i18n: "User",
   },
-  {
-    url: null,
-    name: "Configurations",
-    slug: "todo",
-    icon: "SettingsIcon",
-    i18n: "Configuration",
-    submenu: [
-      {
-        url: "/apps/config/category",
-        name: "Category",
-        slug: "category",
-        icon: "CalendarIcon",
-        i18n: "Master Category",
-      },
-      {
-        url: "/apps/config/priority",
-        name: "Priority",
-        slug: "priority",
-        icon: "CalendarIcon",
-        i18n: "Master Priority",
-      }
-    ]
-  }
+  // {
+  //   url: null,
+  //   name: "Configurations",
+  //   slug: "todo",
+  //   icon: "SettingsIcon",
+  //   i18n: "Configuration",
+  //   submenu: [
+  //     {
+  //       url: "/apps/config/category",
+  //       name: "Category",
+  //       slug: "category",
+  //       icon: "CalendarIcon",
+  //       i18n: "Master Category",
+  //     },
+  //     {
+  //       url: "/apps/config/priority",
+  //       name: "Priority",
+  //       slug: "priority",
+  //       icon: "CalendarIcon",
+  //       i18n: "Master Priority",
+  //     }
+  //   ]
+  // }
 ];
 
 const manager = [

@@ -13,10 +13,6 @@
       <!-- CARD 5: SUPPORT TRACKER -->
       <div class="vx-col w-full md:w-1/2 lg:w-1/2 xl:w-1/2 mb-base">
         <vx-card title="Support Tracker">
-          <!-- CARD ACTION -->
-          <template slot="actions">
-            <change-time-duration-dropdown />
-          </template>
 
           <div slot="no-body">
             <div class="vx-row text-center">
@@ -31,9 +27,8 @@
               </div>
             </div>
               <div class="flex flex-row justify-between px-8 pb-4">
-                  <p class="text-center"><span class="block">New Tickets</span><span class="text-4xl">29</span></p>
                   <p class="text-center"><span class="block">Open Tickets</span><span class="text-4xl">63</span></p>
-                  <p class="text-center"><span class="block">Response Time</span><span class="text-4xl">1d</span></p>
+                  <p class="text-center"><span class="block">Closed Ticket</span><span class="text-4xl">1d</span></p>
 
               </div>
           </div>
