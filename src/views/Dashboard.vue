@@ -28,8 +28,7 @@
             </div>
               <div class="flex flex-row justify-between px-8 pb-4">
                   <p class="text-center"><span class="block">Open Tickets</span><span class="text-4xl">63</span></p>
-                  <p class="text-center"><span class="block">Closed Ticket</span><span class="text-4xl">1d</span></p>
-
+                  <p class="text-center"><span class="block">Closed Ticket</span><span class="text-4xl">23</span></p>
               </div>
           </div>
         </vx-card>
@@ -136,17 +135,6 @@ export default {
             ]
         }
     },
-    // beforeCreate: function (){
-    //   if (localStorage.getItem('reloaded')) {
-    //     // The page was just reloaded. Clear the value from local storage
-    //     // so that it will reload the next time this page is visited.
-    //     localStorage.removeItem('reloaded');
-    //   } else {
-    //       // Set a flag so that we know not to reload the page twice.
-    //       localStorage.setItem('reloaded', '1');
-    //       location.reload();
-    //   }
-    // },
     components: {
         VueApexCharts,
         StatisticsCardLine,

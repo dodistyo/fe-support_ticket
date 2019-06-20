@@ -10,7 +10,7 @@
 
 <template>
      <div :class="[{'vs-sidebar-item-active':activeLink}, {'disabled-item pointer-events-none': isDisabled}]" class="vs-sidebar--item"><!--v-if="canSee" -->
-        <router-link v-if="to" :to="to" :class="[{'router-link-active': activeLink}]" :target="target" exact> <!--:class="[{'router-link-active': activeLink}]"-->
+        <router-link :key="activeLink" v-if="to" :to="to" :class="[{'router-link-active': activeLink}]" :target="target" exact> <!--:class="[{'router-link-active': activeLink}]"-->
             <vs-icon v-if="!featherIcon" :icon-pack="iconPack" :icon="icon">
             </vs-icon>
             <feather-icon :icon="icon" :class="{'w-3 h-3': iconSmall}" v-else></feather-icon>
@@ -96,6 +96,7 @@ export default {
     },
     updated() {
         this.CheckIsActive();
+
     }
 }
 </script>
