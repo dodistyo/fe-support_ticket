@@ -65,9 +65,9 @@
                         {{data[indextr].phone}}
                       </vs-td>
 
-                      <vs-td v-if="data[indextr].priority && userRole == 'Admin'" :data="data[indextr].priority">
+                      <vs-td v-if="data[indextr].priority && (userRole == 'Admin' || userRole =='Manager')" :data="data[indextr].priority">
                           {{data[indextr].priority.name}}
-                      </vs-td><vs-td v-else></vs-td>
+                      </vs-td><vs-td v-else-if="userRole == 'Admin' || userRole =='Manager'"></vs-td>
 
                       <vs-td :data="data[indextr].state">
                         {{data[indextr].state.name}}

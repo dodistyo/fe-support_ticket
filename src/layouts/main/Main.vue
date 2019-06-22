@@ -10,9 +10,9 @@
 
 <template>
     <div class="layout--main" :class="[navbarClasses, footerClasses, {'app-page': isAppPage}]">
-        <vx-tour :steps="steps" v-if="!disableThemeTour" />
+        <!-- <vx-tour :steps="steps" v-if="!disableThemeTour" /> -->
 
-        <the-customizer
+        <!-- <the-customizer
             @updateNavbar="updateNavbar"
             @updateNavbarColor="updateNavbarColor"
             :navbarType="navbarType"
@@ -24,7 +24,7 @@
             v-if="!disableCustomizer"
             :hideScrollToTop="hideScrollToTop"
             @toggleHideScrollToTop="toggleHideScrollToTop"
-            />
+            /> -->
         <vx-sidebar :sidebarItems="sidebarItems" :logo="require('@/assets/images/logo/logo.png')" title="Vuesax" parent=".layout--main" />
 
         <div id="content-area" :class="[contentAreaClass, {'show-overlay': bodyOverlay}]">
