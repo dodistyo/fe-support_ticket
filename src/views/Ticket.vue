@@ -65,9 +65,9 @@
                         {{data[indextr].phone}}
                       </vs-td>
 
-                      <vs-td v-if="data[indextr].priority && (userRole == 'Admin' || userRole =='Manager')" :data="data[indextr].priority">
+                      <vs-td v-if="data[indextr].priority && (userRole == 'Admin' || userRole =='Manager' || userRole =='Staff')" :data="data[indextr].priority">
                           {{data[indextr].priority.name}}
-                      </vs-td><vs-td v-else-if="userRole == 'Admin' || userRole =='Manager'"></vs-td>
+                      </vs-td><vs-td v-else-if="userRole == 'Admin' || userRole =='Manager' || userRole =='Staff'"></vs-td>
 
                       <vs-td :data="data[indextr].state">
                         {{data[indextr].state.name}}
@@ -166,7 +166,7 @@
                   </div>
                   <div class="vx-row mb-6" v-if="userRole == 'Admin' || userRole == 'Manager'">
                     <div class="vx-col sm:w-1/3 w-full">
-                      <span>Assigned Staff</span>
+                      <span>Assigned User</span>
                     </div>
                     <div class="vx-col sm:w-2/3 w-full">
                       <vs-select
@@ -457,15 +457,15 @@ export default {
       update(){
         let id = this.idTicket
         let theState = this.state
-        if(this.staffClosed && this.userClosed){
-          theState = 4 // set state closed
-        }else if(!this.staffClosed && !this.userClosed){
-          theState = 1 // set state open
-        }else if(this.staffClosed){
-          theState = 2 // set state staff closed
-        }else if(this.userClosed){
-          theState = 3 // set state user closed
-        }
+        // if(this.staffClosed && this.userClosed){
+        //   theState = 4 // set state closed
+        // }else if(!this.staffClosed && !this.userClosed){
+        //   theState = 1 // set state open
+        // }else if(this.staffClosed){
+        //   theState = 2 // set state staff closed
+        // }else if(this.userClosed){
+        //   theState = 3 // set state user closed
+        // }
 
         let payload = {
           subject : this.subject,
