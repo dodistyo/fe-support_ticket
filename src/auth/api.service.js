@@ -2,7 +2,7 @@ import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import JwtService from "@/auth/jwt.service";
-import { API_URL } from "@/config/config";
+import { API_URL,GRAPHQL_URL } from "@/config/config";
 
 const ApiService = {
   init() {
@@ -38,7 +38,11 @@ const ApiService = {
 
   delete(resource) {
     return Vue.axios.delete(resource);
-  }
+  },
+
+  // graphql(params) {
+  //   return Vue.axios.post(params);
+  // },
 };
 
 export default ApiService;

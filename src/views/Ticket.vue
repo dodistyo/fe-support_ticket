@@ -152,7 +152,7 @@
                         class="selectExample"
                         v-model="category"
                         >
-                        <vs-select-item :key="index" :value="item.id" :text="item.text" v-for="(item,index) in mCategory" />
+                        <vs-select-item :key="index" :value="item.id" :text="item.name" v-for="(item,index) in mCategory" />
                       </vs-select>
                     </div>
                   </div>
@@ -250,6 +250,8 @@
 <script>
 import ChangeTimeDurationDropdown from '@/components/ChangeTimeDurationDropdown.vue'
 import ApiService from "@/auth/api.service";
+import { GRAPHQL_URL } from "@/config/config";
+import axios from "axios";
 
 
 export default {
@@ -359,9 +361,19 @@ export default {
           // console.log('always executed')
         });
       },
+      getMaster(){
+        axios({
+        method: 'post',
+        url: GRAPHQL_URL,
+        data: { "query": "{ users { id name} categories { id name}}"} 
+        }).then(({data}) => {
+          this.mUser = data.data.users
+          this.mCategory = data.data.categories
+        });
+      },
       // Modal action
       async add(){
-        await this.getAllUser(); //get all user for dropdown
+        await this.getMaster(); //get all user for dropdown
         this.ticketModal = true;
         this.ticketState = false; //You can only modify ticket state when editing (gabisa nginput state pas pertama bikin)
         this.titleModal = 'Add Record';
@@ -385,7 +397,7 @@ export default {
         // END OF TIcket field
       },
       async edit(data){
-        await this.getAllUser(); //get all user for dropdown
+        await this.getMaster(); //get all user for dropdown
         this.ticketModal = true;
         this.ticketState = true; //You can only modify ticket state when editing (gabisa nginput state pas pertama bikin)
         this.titleModal = 'Edit Record'

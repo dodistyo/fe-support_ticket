@@ -25,7 +25,7 @@
             :hideScrollToTop="hideScrollToTop"
             @toggleHideScrollToTop="toggleHideScrollToTop"
             /> -->
-        <vx-sidebar :sidebarItems="sidebarItems" :logo="require('@/assets/images/logo/logo.png')" title="Vuesax" parent=".layout--main" />
+        <vx-sidebar :sidebarItems="sidebarItems" :logo="require('@/assets/images/logo/logo.png')" title="Support" parent=".layout--main" />
 
         <div id="content-area" :class="[contentAreaClass, {'show-overlay': bodyOverlay}]">
 
