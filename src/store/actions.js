@@ -30,7 +30,7 @@ const actions = {
         commit('UPDATE_USER_ROLE', val);
     },
 
-    getUserDetail({ commit, rootState }){
+    getUserDetail({ commit, rootState }) {
         return rootState.auth.user.name;
     },
 
@@ -41,17 +41,23 @@ const actions = {
     
     // VxAutoSuggest
     updateStarredPage({ commit }, payload) {
-        commit('UPDATE_STARRED_PAGE', payload)
+        commit('UPDATE_STARRED_PAGE', payload);
     },
 
     //  The Navbar
     arrangeStarredPagesLimited({ commit }, list) {
-        commit('ARRANGE_STARRED_PAGES_LIMITED', list)
+        commit('ARRANGE_STARRED_PAGES_LIMITED', list);
     },
     arrangeStarredPagesMore({ commit }, list) {
-        commit('ARRANGE_STARRED_PAGES_MORE', list)
+        commit('ARRANGE_STARRED_PAGES_MORE', list);
     },
+    updateNotifCount({ commit }, payload) {
+        commit('UPDATE_NOTIFICATION_COUNT', payload);
+    },
+    updateUnreadNotif({ commit }, payload) {
+        commit('UPDATE_UNREAD_NOTIFICATION', payload);
+    }
     
-}
+};
 
-export default actions
+export default actions;

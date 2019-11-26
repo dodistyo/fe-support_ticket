@@ -36,25 +36,25 @@
 
 			<!-- NOTIFICATIONS -->
 			<vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
-				<feather-icon icon="BellIcon" class="cursor-pointer mt-1 sm:mr-6 mr-2" :badge="unreadNotifications.length"></feather-icon>
+				<feather-icon icon="BellIcon" class="cursor-pointer mt-1 sm:mr-6 mr-2" :badge="this.notifCount"></feather-icon>
 				<vs-dropdown-menu class="notification-dropdown dropdown-custom">
 
 					<div class="notification-top text-center p-5 bg-primary text-white">
-						<h3 class="text-white">{{ unreadNotifications.length }} New</h3>
+						<h3 class="text-white">{{ this.notifCount }} New</h3>
 						<p class="opacity-75">App Notifications</p>
 					</div>
 
 					<VuePerfectScrollbar ref="mainSidebarPs" class="scroll-area--nofications-dropdown p-0 mb-10" :settings="settings">
 					<ul class="bordered-items">
-						<li v-for="ntf in unreadNotifications" :key="ntf.index" class="flex justify-between px-4 py-4 notification cursor-pointer">
+						<li v-for="(ntf, index) in unreadNotif" :key="index" class="flex justify-between px-4 py-4 notification cursor-pointer">
 							<div class="flex items-start">
-								<feather-icon :icon="ntf.icon" :svgClasses="[`text-${ntf.category}`, 'stroke-current mr-1 h-6 w-6']"></feather-icon>
+								<feather-icon icon="FileTextIcon" :svgClasses="[`text-success`, 'stroke-current mr-1 h-6 w-6']"></feather-icon>
 								<div class="mx-2">
-									<span class="font-medium block notification-title" :class="[`text-${ntf.category}`]">{{ ntf.title }}</span>
-									<small>{{ ntf.msg }}</small>
+									<span class="font-medium block notification-title text-success">{{ ntf.message }}</span>
+									<small>{{ ntf.message }}</small>
 								</div>
 							</div>
-							<small class="mt-1 whitespace-no-wrap">{{ elapsedTime(ntf.time) }}</small>
+							<!-- <small class="mt-1 whitespace-no-wrap">{{ elapsedTime(ntf.time) }}</small> -->
 						</li>
 					</ul>
 					</VuePerfectScrollbar>
@@ -130,7 +130,7 @@ import 'firebase/auth'
 import VxAutoSuggest from '@/components/vx-auto-suggest/VxAutoSuggest.vue';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import draggable from 'vuedraggable'
-import { mapGetters } from 'vuex'
+import { mapGetters,mapState } from 'vuex'
 
 export default {
     name: "the-navbar",
@@ -144,14 +144,8 @@ export default {
         return {
             navbarSearchAndPinList: this.$store.state.navbarSearchAndPinList,
             searchQuery: '',
+            unreadNotification: [{"message":"A New Ticket Created With Ticket Number : ST1574760460808","isRead":false,"relatedTicket":{"id":88},"id":68,"createdAt":"2019-11-26T02:27:40.857Z","updatedAt":"2019-11-26T02:27:40.857Z"},{"message":"A New Ticket Created With Ticket Number : ST1574760467445","isRead":false,"relatedTicket":{"id":89},"id":69,"createdAt":"2019-11-26T02:27:47.553Z","updatedAt":"2019-11-26T02:27:47.553Z"}],
             showFullSearch: false,
-            unreadNotifications: [
-                { index: 0, title: 'New Message', msg: 'Are your going to meet me tonight?', icon: 'MessageSquareIcon', time: 'Wed Jan 30 2019 07:45:23 GMT+0000 (GMT)', category: 'primary' },
-                { index: 1, title: 'New Order Recieved', msg: 'You got new order of goods.', icon: 'PackageIcon', time: 'Wed Jan 30 2019 07:45:23 GMT+0000 (GMT)', category: 'success' },
-                { index: 2, title: 'Server Limit Reached!', msg: 'Server have 99% CPU usage.', icon: 'AlertOctagonIcon', time: 'Thu Jan 31 2019 07:45:23 GMT+0000 (GMT)', category: 'danger' },
-                { index: 3, title: 'New Mail From Peter', msg: 'Cake sesame snaps cupcake', icon: 'MailIcon', time: 'Fri Feb 01 2019 07:45:23 GMT+0000 (GMT)', category: 'primary' },
-                { index: 4, title: 'Bruce\'s Party', msg: 'Chocolate cake oat cake tiramisu', icon: 'CalendarIcon', time: 'Fri Feb 02 2019 07:45:23 GMT+0000 (GMT)', category: 'warning' },
-            ],
             settings: { // perfectscrollbar settings
                 maxScrollbarLength: 60,
                 wheelSpeed: .60,
@@ -224,6 +218,14 @@ export default {
             // return JSON.parse(localStorage.getItem('userInfo')).displayName
             return  this.$store.state.auth.user.name
         },
+
+        // Notification Number
+        notifCount(){
+            return this.$store.state.notifCount
+        },
+
+        ...mapState(['unreadNotif']),
+
         activeUserImg() {
             // return JSON.parse(localStorage.getItem('userInfo')).photoURL || this.$store.state.AppActiveUser.img;
             return this.$store.state.AppActiveUser.img;
@@ -321,5 +323,11 @@ export default {
         VuePerfectScrollbar,
         draggable
     },
+    mounted(){
+        this.sockets.subscribe('notif for manager', (data) => {
+            this.$store.dispatch('updateNotifCount', 1);
+            this.$store.dispatch('updateUnreadNotif', data);
+        });
+    }
 }
 </script>

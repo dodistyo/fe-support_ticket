@@ -7,31 +7,31 @@
   Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
 
-import navbarSearchAndPinList from '@/layouts/components/navbarSearchAndPinList'
-import themeConfig from '@/../themeConfig.js'
-import colors from '@/../themeConfig.js'
+import navbarSearchAndPinList from '@/layouts/components/navbarSearchAndPinList';
+import themeConfig from '@/../themeConfig.js';
+import colors from '@/../themeConfig.js';
 
 const state = {
-    isSidebarActive: true,
-    breakpoint: null,
-    sidebarWidth: "default",
-    reduceButton: themeConfig.sidebarCollapsed,
-    bodyOverlay: false,
-    sidebarItemsMin: false,
-    theme: themeConfig.theme || 'light',
-    navbarSearchAndPinList: navbarSearchAndPinList,
-    AppActiveUser: {
-        id: 0,
-        name: 'John Doe',
-        about: 'Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.',
-        img: 'avatar-s-11.png',
-        status: 'online',
-    },
+  isSidebarActive: true,
+  breakpoint: null,
+  sidebarWidth: "default",
+  reduceButton: themeConfig.sidebarCollapsed,
+  bodyOverlay: false,
+  sidebarItemsMin: false,
+  theme: themeConfig.theme || 'light',
+  navbarSearchAndPinList: navbarSearchAndPinList,
+  AppActiveUser: {
+    id: 0,
+    name: 'John Doe',
+    about: 'Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.',
+    img: 'avatar-s-11.png',
+    status: 'online',
+  },
+  themePrimaryColor: colors.primary,
+  starredPages: navbarSearchAndPinList.data.filter((page) => page.highlightAction),
+  userRole: null,
+  notifCount: 0,
+  unreadNotif: []
+};
 
-    themePrimaryColor: colors.primary,
-
-    starredPages: navbarSearchAndPinList.data.filter((page) => page.highlightAction),
-    userRole: null,
-}
-
-export default state
+export default state;

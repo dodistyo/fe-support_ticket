@@ -23,7 +23,7 @@
                 </div>
               </div>
               <div class="vx-col sm:w-4/5 justify-center mx-auto">
-                <vue-apex-charts type=radialBar height=250 :options="chartOptions" :series="persen" />
+                <vue-apex-charts type=radialBar height=300 :options="chartOptions" :series="percent" />
               </div>
             </div>
               <div class="flex flex-row justify-between px-8 pb-4">
@@ -47,7 +47,7 @@ export default {
     data() {
         return {
           total : 0,
-          persen : 0,
+          percent : [],
           closed : 0,
           opened : 0,
           chartOptions: {
@@ -104,8 +104,14 @@ export default {
         ApiService.setHeader();
         ApiService.get("ticket/detailDashboard")
         .then(({ data }) => {
+          let percent;
+          if(isNaN(data.percent)){
+            percent = 0
+          }else{
+            percent = data.percent
+          }
           this.total = data.total
-          this.persen = [data.persen]
+          this.percent = [percent]
           this.closed = data.closed
           this.opened = data.opened
           resolve(data);

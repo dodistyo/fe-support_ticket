@@ -39,8 +39,8 @@ const mutations = {
         state.themePrimaryColor = val;  
     },
     UPDATE_USER_ROLE(state, val) {
-        state.userRole = val
-        localStorage.setItem('userRole', val)
+        state.userRole = val;
+        localStorage.setItem('userRole', val);
     },
     UPDATE_STATUS_CHAT(state, value) {
         state.AppActiveUser.status = value;
@@ -74,6 +74,12 @@ const mutations = {
         const starredPagesMore = state.starredPages.slice(10);
         state.starredPages = list.concat(starredPagesMore);
     },
+    UPDATE_NOTIFICATION_COUNT(state, payload) {
+        state.notifCount += payload;
+    },
+    UPDATE_UNREAD_NOTIFICATION(state, payload) {
+        state.unreadNotif.push(payload);
+    },
     ARRANGE_STARRED_PAGES_MORE(state, list) {
         let downToUp = false
         let lastItemInStarredLimited = state.starredPages[10];
@@ -89,4 +95,4 @@ const mutations = {
     },
 }
 
-export default mutations
+export default mutations;
